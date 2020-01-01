@@ -17,7 +17,6 @@ RUN \
 mkdir -p /etc/unbound/unbound.conf.d && \
 ln -s /opt/accomplist/special/unbound-filter.conf /etc/unbound/unbound.conf.d/ && \
 curl -o /etc/unbound/root.hints https://www.internic.net/domain/named.cache && \
-rm /usr/share/dnssec-root/trusted-key.key && \
 unbound-anchor -v -a /usr/share/dnssec-root/trusted-key.key
 RUN \
 printf '%s\n\t' 'server:' '    auto-trust-anchor-file: "/etc/unbound/root.key"' > /etc/unbound/unbound.conf.d/root-auto-trust-anchor-file.conf && \
