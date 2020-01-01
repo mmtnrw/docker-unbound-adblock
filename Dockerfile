@@ -10,7 +10,7 @@ apk add --no-cache curl git python openssl unbound py-requests py-pip alpine-sdk
 echo "**** Installing Accomplist ****" && \
 pip2 install requests regex pytricia ipy netaddr && \
 cd /opt && \
-git clone https://github.com/cbuijs/accomplist.git \
+git clone https://github.com/cbuijs/accomplist.git && \
 cd accomplist && \
 python accomplist.py && \
 mkdir -p /etc/unbound/unbound.conf.d && \
