@@ -27,12 +27,10 @@ rm -rf /tmp/*
 COPY Files/ /
 
 RUN \
-chmod +x /root/start.sh && \
 echo "**** Setting Cron Job every hour for Accomplist ****" && \
 echo '0 0 * * 0 /usr/bin/python /opt/accomplist/accomplist.py &> /dev/null' >> /var/spool/cron/crontabs/root
 
 # Copying local files
-COPY root/ /root/
 
 RUN \
 chmod +x /root/start.sh
