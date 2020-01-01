@@ -13,3 +13,4 @@ services:
       - "./extra:/extra"
     environment:
        TZ: "Europe/Amsterdam"
+       LISTEN: "127.0.0.1"
