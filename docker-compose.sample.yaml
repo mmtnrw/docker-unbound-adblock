@@ -1,0 +1,15 @@
+version: '2.2'
+
+services:
+  unbound:
+    image: "mmtnrw/unbound:latest"
+    restart: always
+    network_mode: host
+    privileged: true
+    tty: true
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "./extra:/extra"
+    environment:
+       TZ: "Europe/Amsterdam"
