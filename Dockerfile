@@ -21,7 +21,7 @@ RUN \
 curl -o /etc/unbound/root.hints https://www.internic.net/domain/named.cache
 RUN \
 unbound-anchor -v -a /etc/unbound/root.key || \
-touch /etc/unbound/root.key
+chown unbound /etc/unbound/root.key
 RUN \
 printf '%s\n\t' 'server:' '    auto-trust-anchor-file: "/etc/unbound/root.key"' > /etc/unbound/unbound.conf.d/root-auto-trust-anchor-file.conf && \
 ln -s /extra /etc/unbound/extra && \
