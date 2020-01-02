@@ -20,11 +20,13 @@ ln -s /opt/accomplist/special/unbound-filter.conf /etc/unbound/unbound.conf.d/
 RUN \
 curl -o /etc/unbound/root.hints https://www.internic.net/domain/named.cache
 RUN \
-unbound-anchor -v -a /usr/share/dnssec-root/trusted-key.key
+unbound-anchor -v -a /usr/share/dnssec-root/trusted-key.key && \
+ln -s /usr/share/dnssec-root/trusted-key.key /etc/unbound/root.key
 RUN \
 printf '%s\n\t' 'server:' '    auto-trust-anchor-file: "/etc/unbound/root.key"' > /etc/unbound/unbound.conf.d/root-auto-trust-anchor-file.conf && \
 ln -s /extra /etc/unbound/extra && \
 echo "**** Cleaning up ****" && \
+apk del alpine-sdk python-dev && \
 rm -rf /tmp/*
 
 
