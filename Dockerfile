@@ -20,8 +20,8 @@ ln -s /opt/accomplist/special/unbound-filter.conf /etc/unbound/unbound.conf.d/
 RUN \
 curl -o /etc/unbound/root.hints https://www.internic.net/domain/named.cache
 RUN \
-touch /etc/unbound/root.key && \
-unbound-anchor -v -a /etc/unbound/root.key
+unbound-anchor -v -a /etc/unbound/root.key || \
+touch /etc/unbound/root.key
 RUN \
 printf '%s\n\t' 'server:' '    auto-trust-anchor-file: "/etc/unbound/root.key"' > /etc/unbound/unbound.conf.d/root-auto-trust-anchor-file.conf && \
 ln -s /extra /etc/unbound/extra && \
