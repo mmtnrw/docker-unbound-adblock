@@ -20,7 +20,7 @@ ln -s /opt/accomplist/special/unbound-filter.conf /etc/unbound/unbound.conf.d/
 RUN \
 curl -o /etc/unbound/root.hints https://www.internic.net/domain/named.cache
 RUN \
-unbound-anchor -v -a /etc/unbound/root.key || \
+/usr/sbin/unbound-anchor -v -a /etc/unbound/root.key || \
 chown unbound:unbound -R /etc/unbound
 RUN \
 printf '%s\n\t' 'server:' '    auto-trust-anchor-file: "/etc/unbound/root.key"' > /etc/unbound/unbound.conf.d/root-auto-trust-anchor-file.conf && \
@@ -34,7 +34,8 @@ COPY Files/ /
 
 RUN \
 echo "**** Setting Cron Job every hour for Accomplist ****" && \
-echo '0 0 * * 0 /usr/bin/python /opt/accomplist/accomplist.py &> /dev/null' >> /var/spool/cron/crontabs/root
+echo '0 0 * * 0 /usr/bin/python /opt/accomplist/accomplist.py && killall -9 unbound && unbound -d&' >> /var/spool/cron/crontabs/root && \
+echo '0 0 1 */6 * /usr/sbin/unbound-anchor -v -a /etc/unbound/root.key && chown unbound:unbound -R /etc/unbound && killall -9 unbound && unbound -d&' >> /var/spool/cron/crontabs/root
 
 # Copying local files
 
