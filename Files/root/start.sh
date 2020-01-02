@@ -8,4 +8,3 @@ if [[ ! -z "$LISTEN" ]]; then
 sed -i "s/interface:.*$/interface: ${LISTEN}/" /etc/unbound/unbound.conf
 fi
 /usr/sbin/unbound -d -vvv
-/bin/sh
