@@ -5,6 +5,6 @@ echo "[info] Starting Cronie....."
 
 echo "[info] Starting Unbound....."
 if [[ ! -z "$LISTEN" ]]; then
-sed -i "s/interface:.*$/interface: ${LISTEN}/" /etc/unbound/unbound.conf
+sed -i -e "0,/interface: .*$/s//interface: ${LISTEN}/1" /etc/unbound/unbound.conf
 fi
 /usr/sbin/unbound -d -vvv
