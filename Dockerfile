@@ -6,44 +6,32 @@ ARG VERSION
 
 RUN \
 echo "**** Installing Packages ****" && \
-apk add --no-cache curl git python openssl unbound py-requests py-pip alpine-sdk python-dev && \
-echo "**** Installing Accomplist ****" && \
-pip2 install requests regex pytricia ipy netaddr && \
-cd /opt && \
-git clone https://github.com/cbuijs/accomplist.git && \
-cd accomplist && \
-python accomplist.py
+apk add --no-cache curl openssl unbound && \
+
 RUN \
 mkdir -p /etc/unbound/unbound.conf.d
-RUN \
-ln -s /opt/accomplist/special/unbound-filter.conf /etc/unbound/unbound.conf.d/
-RUN \
-curl -o /etc/unbound/root.hints https://www.internic.net/domain/named.cache
-RUN \
-/usr/sbin/unbound-anchor -v -a /etc/unbound/root.key || \
-chown unbound:unbound -R /etc/unbound
 RUN \
 printf '%s\n\t' 'server:' '    auto-trust-anchor-file: "/etc/unbound/root.key"' > /etc/unbound/unbound.conf.d/root-auto-trust-anchor-file.conf && \
 ln -s /extra /etc/unbound/extra && \
 echo "**** Cleaning up ****" && \
-apk del alpine-sdk python-dev && \
 rm -rf /tmp/*
 
 
 COPY Files/ /
 
 RUN \
-echo "**** Setting Cron Job every hour for Accomplist ****" && \
-echo '0 0 * * 0 /usr/bin/python /opt/accomplist/accomplist.py && killall -9 unbound && unbound -d&' >> /var/spool/cron/crontabs/root && \
-echo '0 0 1 */6 * /usr/sbin/unbound-anchor -v -a /etc/unbound/root.key && chown unbound:unbound -R /etc/unbound && killall -9 unbound && unbound -d&' >> /var/spool/cron/crontabs/root
+echo "**** Setting Cron Job every Week for Adblock, Trust-Anchor, Root.hints ****" && \
+echo '0 0 1 */6 * /root/adblock.sh' >> /var/spool/cron/crontabs/root
 
-# Copying local files
+# Copying local files, Modify Executables and actualize Data
 
 RUN \
-chmod +x /root/start.sh
+chmod +x /root/start.sh && \
+chmod +x /root/adblock.sh && \
+/root/adblock.sh
 
 # ports and volumes
-VOLUME /extra
+VOLUME /extra /lists
 EXPOSE 53
 
 CMD ["/root/start.sh"]
