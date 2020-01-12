@@ -42,5 +42,3 @@ chown unbound:unbound -R /etc/unbound
 echo "[info] Restarting Unbound..."
 
 killall -9 unbound &> /dev/null
-
-exit 0
