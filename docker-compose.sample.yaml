@@ -8,9 +8,8 @@ services:
     privileged: true
     tty: true
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
       - "./extra:/extra"
+      - "./lists:/lists"
     environment:
        TZ: "Europe/Amsterdam"
        LISTEN: "127.0.0.1"
