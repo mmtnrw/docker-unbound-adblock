@@ -6,7 +6,7 @@ ARG VERSION
 
 RUN \
 echo "**** Installing Packages ****" && \
-apk add --no-cache curl openssl unbound && \
+apk add --no-cache curl openssl unbound
 
 RUN \
 mkdir -p /etc/unbound/unbound.conf.d
