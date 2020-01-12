@@ -6,7 +6,7 @@ blacklists='http://winhelp2002.mvps.org/hosts.txt http://pgl.yoyo.org/as/serverl
 whitelist='/lists/whitelist.txt'
 
 echo "[info] Fetching Blacklists..."
-for url in $blacklist; do
+for url in $blacklists; do
     curl --silent $url >> "/tmp/blacklist.txt"
 done
 if [ ! -f $whitelist ]; then
@@ -15,13 +15,14 @@ touch /lists/whitelist.txt
 fi
 
 echo 'server :' > /etc/unbound/unbound.conf.d/blacklist.conf
-cat /tmp/blacklist|grep -v '#'|sed '/^[[:space:]]*$/d'|awk '{print $NF}'|awk '!a[$0]++'|grep -Fvxf ${whitelist}|awk '{print "local-zone: \""$0"\" always_nxdomain"}' >> /etc/unbound/unbound.conf.d/blacklist.conf
-rm /tmp/blacklist.txt
+cat /tmp/blacklist.txt|grep -v '#'|sed '/^[[:space:]]*$/d'|awk '{print $NF}'|awk '!a[$0]++'|grep -Fvxf ${whitelist}|awk '{print "local-zone: \""$0"\" always_nxdomain"}' >> /etc/unbound/unbound.conf.d/blacklist.conf
+rm /tmp/blacklist.txt &> /dev/null
 
 ### Root Hints
 
 echo "[info] Updating Root.hints..."
 
+rm -rf /etc/unbound/root.hints &> /dev/null
 curl -s https://www.internic.net/domain/named.cache -o /etc/unbound/root.hints
 
 ### Trusted Anchor
