@@ -5,7 +5,7 @@
 blacklists='http://winhelp2002.mvps.org/hosts.txt http://pgl.yoyo.org/as/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext https://adaway.org/hosts.txt https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts https://mirror1.malwaredomains.com/files/justdomains http://sysctl.org/cameleon/hosts https://zeustracker.abuse.ch/blocklist.php?download=domainblocklist https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt https://hosts-file.net/ad_servers.txt'
 whitelist='/lists/whitelist.txt'
 
-echo "Fetching Blacklists..."
+echo "[info] Fetching Blacklists..."
 for url in $blacklist; do
     curl --silent $url >> "/tmp/blacklist.txt"
 done
@@ -20,18 +20,26 @@ rm /tmp/blacklist.txt
 
 ### Root Hints
 
+echo "[info] Updating Root.hints..."
+
 curl -s https://www.internic.net/domain/named.cache -o /etc/unbound/root.hints
 
 ### Trusted Anchor
+
+echo "[info] Updating Anchor..."
 
 rm -rf /etc/unbound/root.key $> /dev/null
 /usr/sbin/unbound-anchor -v -a /etc/unbound/root.key
 
 ### Permissionfix
 
+echo "[info] Fixing Permissions..."
+
 chown unbound:unbound -R /etc/unbound
 
 ### Restart Unbound
+
+echo "[info] Restarting Unbound..."
 
 killall -9 unbound &> /dev/null
 
