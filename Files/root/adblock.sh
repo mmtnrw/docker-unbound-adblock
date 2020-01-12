@@ -24,7 +24,7 @@ curl -s https://www.internic.net/domain/named.cache -o /etc/unbound/root.hints
 
 ### Trusted Anchor
 
-rm -rf /etc/unbound/root.key
+rm -rf /etc/unbound/root.key $> /dev/null
 /usr/sbin/unbound-anchor -v -a /etc/unbound/root.key
 
 ### Permissionfix
