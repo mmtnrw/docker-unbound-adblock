@@ -9,6 +9,11 @@ echo "Fetching Blacklists..."
 for url in $blacklist; do
     curl --silent $url >> "/tmp/blacklist.txt"
 done
+if [ ! -f $FILE ]; then
+mkdir -p /lists &> /dev/null
+touch /lists/whitelist.txt
+fi
+
 echo 'server :' > /etc/unbound/unbound.conf.d/blacklist.conf
 cat /tmp/hosts.working|grep -v '#'|sed '/^[[:space:]]*$/d'|awk '{print $NF}'|awk '!a[$0]++'|grep -Fvxf ${whitelist}|awk '{print "local-zone: \""$0"\" always_nxdomain"}' >> /etc/unbound/unbound.conf.d/blacklist.conf
 rm /tmp/blacklist.txt
@@ -28,6 +33,6 @@ chown unbound:unbound -R /etc/unbound
 
 ### Restart Unbound
 
-killall -9 unbound
+killall -9 unbound &> /dev/null
 
 exit 0
