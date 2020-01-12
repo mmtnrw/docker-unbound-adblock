@@ -2,20 +2,20 @@
 
 ### Blacklist
 
-blacklists='http://winhelp2002.mvps.org/hosts.txt http://pgl.yoyo.org/as/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext https://adaway.org/hosts.txt https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts https://mirror1.malwaredomains.com/files/justdomains http://sysctl.org/cameleon/hosts https://zeustracker.abuse.ch/blocklist.php?download=domainblocklist https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt https://hosts-file.net/ad_servers.txt'
+blacklists='http://winhelp2002.mvps.org/hosts.txt https://pgl.yoyo.org/as/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext https://adaway.org/hosts.txt https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts https://mirror1.malwaredomains.com/files/justdomains http://sysctl.org/cameleon/hosts https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt https://hosts-file.net/ad_servers.txt'
 whitelist='/lists/whitelist.txt'
 
 echo "[info] Fetching Blacklists..."
 for url in $blacklists; do
-    curl --silent $url >> "/tmp/blacklist.txt"
+    curl --silent $url|grep -v '<'>> "/tmp/blacklist.txt"
 done
 if [ ! -f $whitelist ]; then
 mkdir -p /lists &> /dev/null
 touch /lists/whitelist.txt
 fi
 
-echo 'server :' > /etc/unbound/unbound.conf.d/blacklist.conf
-cat /tmp/blacklist.txt|grep -v '#'|sed '/^[[:space:]]*$/d'|awk '{print $NF}'|awk '!a[$0]++'|grep -Fvxf ${whitelist}|awk '{print "local-zone: \""$0"\" always_nxdomain"}' >> /etc/unbound/unbound.conf.d/blacklist.conf
+#echo 'server :' > /etc/unbound/unbound.conf.d/blacklist.conf
+cat /tmp/blacklist.txt|grep -v '#'|sed '/^[[:space:]]*$/d'|awk '{print $NF}'|awk '!a[$0]++'|grep -Fvxf ${whitelist}|awk '{print "local-zone: \""$0"\" always_nxdomain"}' > /etc/unbound/unbound.conf.d/blacklist.conf
 rm /tmp/blacklist.txt &> /dev/null
 
 ### Root Hints
