@@ -9,7 +9,7 @@ echo "Fetching Blacklists..."
 for url in $blacklist; do
     curl --silent $url >> "/tmp/blacklist.txt"
 done
-if [ ! -f $FILE ]; then
+if [ ! -f $whitelist ]; then
 mkdir -p /lists &> /dev/null
 touch /lists/whitelist.txt
 fi
