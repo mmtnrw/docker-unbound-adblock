@@ -1,5 +1,8 @@
 #!/bin/sh
 
+echo "[info] Setting up Nameserver to Cloudflare"
+echo "nameserver 1.1.1.1" > /etc/resolv.conf
+
 echo "[info] Setting up Timezone : $TZ"
 ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
 echo $TZ > /etc/timezone
@@ -20,5 +23,5 @@ fi
 echo "[info] Starting Unbound....."
 chown -R unbound:unbound /etc/unbound
 /usr/sbin/unbound -d -vvv
-echo "[info] Starting Bash for Error searching....."
-/bin/sh
+#echo "[info] Starting Bash for Error searching....."
+#/bin/sh
