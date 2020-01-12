@@ -1,5 +1,13 @@
 #!/bin/sh
 
+echo "[info] Setting up Timezone : $TZ"
+ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
+echo $TZ > /etc/timezone
+
+echo "[info] Syncing Time...."
+ntpd -d -q -n -p time.cloudflare.com &> /dev/null
+
+
 echo "[info] Starting Cronie....."
 /usr/sbin/crond &
 
