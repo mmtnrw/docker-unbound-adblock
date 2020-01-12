@@ -27,8 +27,7 @@ echo '0 0 1 */6 * /root/adblock.sh' >> /var/spool/cron/crontabs/root
 
 RUN \
 chmod +x /root/start.sh && \
-chmod +x /root/adblock.sh && \
-/root/adblock.sh
+chmod +x /root/adblock.sh
 
 # ports and volumes
 VOLUME /extra /lists
