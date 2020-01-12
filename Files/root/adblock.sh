@@ -15,7 +15,7 @@ touch /lists/whitelist.txt
 fi
 
 echo 'server :' > /etc/unbound/unbound.conf.d/blacklist.conf
-cat /tmp/hosts.working|grep -v '#'|sed '/^[[:space:]]*$/d'|awk '{print $NF}'|awk '!a[$0]++'|grep -Fvxf ${whitelist}|awk '{print "local-zone: \""$0"\" always_nxdomain"}' >> /etc/unbound/unbound.conf.d/blacklist.conf
+cat /tmp/blacklist|grep -v '#'|sed '/^[[:space:]]*$/d'|awk '{print $NF}'|awk '!a[$0]++'|grep -Fvxf ${whitelist}|awk '{print "local-zone: \""$0"\" always_nxdomain"}' >> /etc/unbound/unbound.conf.d/blacklist.conf
 rm /tmp/blacklist.txt
 
 ### Root Hints
