@@ -7,9 +7,11 @@ echo $TZ > /etc/timezone
 echo "[info] Syncing Time...."
 ntpd -d -q -n -p time.cloudflare.com &> /dev/null
 
-
 echo "[info] Starting Cronie....."
 /usr/sbin/crond &
+
+echo "[info] Updating Adblocking...."
+source /root/adblock.sh
 
 if [[ ! -z "$LISTEN" ]]; then
 echo "[info] Changing Interface to: $LISTEN"
