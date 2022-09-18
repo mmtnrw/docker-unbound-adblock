@@ -2,14 +2,14 @@
 
 ### Blacklist
 
-blacklists='https://winhelp2002.mvps.org/hosts.txt https://pgl.yoyo.org/as/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext https://adaway.org/hosts.txt https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts https://mirror1.malwaredomains.com/files/justdomains http://sysctl.org/cameleon/hosts https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt https://raw.githubusercontent.com/chadmayfield/pihole-blocklists/master/lists/pi_blocklist_porn_top1m.list https://raw.githubusercontent.com/superover/TikTok-Blocklist/master/tiktok.txt https://github.com/daylamtayari/Pi-Hole-Blocklist/raw/master/Mirrors/Snapchat-Blocklist--d43m0nhLInt3r.txt'
-whitelist='/lists/whitelist.txt'
+#blacklists='https://winhelp2002.mvps.org/hosts.txt https://pgl.yoyo.org/as/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext https://adaway.org/hosts.txt https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts https://mirror1.malwaredomains.com/files/justdomains http://sysctl.org/cameleon/hosts https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt https://raw.githubusercontent.com/chadmayfield/pihole-blocklists/master/lists/pi_blocklist_porn_top1m.list https://raw.githubusercontent.com/superover/TikTok-Blocklist/master/tiktok.txt https://github.com/daylamtayari/Pi-Hole-Blocklist/raw/master/Mirrors/Snapchat-Blocklist--d43m0nhLInt3r.txt'
+#whitelist='/lists/whitelist.txt'
 
 echo "[info] Fetching Blacklists..."
-for url in $blacklists; do
+for url in $BLACKLIST; do
     curl --silent $url|grep -v '<'>> "/tmp/blacklist.txt"
 done
-if [ ! -f $whitelist ]; then
+if [ ! -f $WHITELIST ]; then
 mkdir -p /lists &> /dev/null
 touch /lists/whitelist.txt
 fi
