@@ -6,16 +6,16 @@
 #whitelist='/lists/whitelist.txt'
 
 echo "[info] Fetching Blacklists..."
-for url in $BLACKLIST; do
-    curl --silent $url|grep -v '<'>> "/tmp/blacklist.txt"
+for url in ${BLACKLIST}; do
+    curl --silent $url|grep -v '<' >> "/tmp/blacklist.txt"
 done
-if [ ! -f $WHITELIST ]; then
+if [ ! -f ${WHITELIST} ]; then
 mkdir -p /lists &> /dev/null
 touch /lists/whitelist.txt
 fi
 
 #echo 'server :' > /etc/unbound/unbound.conf.d/blacklist.conf
-cat /tmp/blacklist.txt|grep -v '#'|sed '/^[[:space:]]*$/d'|awk '{print $NF}'|awk '!a[$0]++'|grep -Fvxf ${whitelist}|awk '{print "local-zone: \""$0"\" always_nxdomain"}' > /etc/unbound/unbound.conf.d/blacklist.conf
+cat /tmp/blacklist.txt|grep -v '#'|sed '/^[[:space:]]*$/d'|awk '{print $NF}'|awk '!a[$0]++'|grep -Fvxf ${WHITELIST}|awk '{print "local-zone: \""$0"\" always_nxdomain"}' > /etc/unbound/unbound.conf.d/blacklist.conf
 rm /tmp/blacklist.txt &> /dev/null
 
 ### Root Hints
